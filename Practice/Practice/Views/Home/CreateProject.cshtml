@@ -1,0 +1,88 @@
+﻿@model Practice.Models.CreateProjectViewModel
+
+@{
+    ViewBag.Title = "CreateProject";
+}
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#CreatedDate').prop('disabled', true);
+    });
+</script>
+
+<div class="page-header">
+     <h1>Create Project</h1>
+</div>
+
+<div class="bs-component">
+    <div class="well col-lg-12 col-md-12 col-sm-12">
+        @if(!ViewData.ModelState.IsValid)
+        {
+            <div class="alert alert-danger">
+                <span class="close" data-dismiss="alert">x</span>
+                <ul>
+                    @foreach (var key in ViewData.ModelState.Keys)
+                    {
+                        foreach (var err in ViewData.ModelState[key].Errors)
+                        {
+                            <li>@err.ErrorMessage</li>
+                        }
+                    }
+                </ul>
+            </div>
+        }
+        <div class="col-lg-6 col-md-6 col-sm-6">
+            @using(Html.BeginForm("CreateProject", "Home", null, FormMethod.Post, new { enctype = "multipart/form-data", novalidate = "novalidate" }))
+            {
+                @Html.AntiForgeryToken()
+                <fieldset>
+                    <div class="row">
+                        <div class="form-group">
+                            <div class="col-lg-4 col-md-4 col-sm-4 control-label">
+                                @Html.LabelFor(model => model.Name)
+                            </div>
+                            <div class="col-lg-8 col-md-8 col-sm-8 form-control-static">
+                                @Html.TextAreaFor(model => model.Name, new { @class = "form-control", rows = 1, style = "resize: none" })
+                                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-lg-4 col-md-4 col-sm-4 control-label">
+                                @Html.LabelFor(model => model.Description)
+                            </div>
+                            <div class="col-lg-8 col-md-8 col-sm-8 form-control-static">
+                                @Html.TextAreaFor(model => model.Description, new { @class = "form-control", rows = 2 })
+                                @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-lg-4 col-md-4 col-sm-4 control-label">
+                                @Html.LabelFor(model => model.CreatedDate)
+                            </div>
+                            <div class="col-lg-8 col-md-8 col-sm-8 form-control-static">
+                                @Html.EditorFor(model => model.CreatedDate, new { htmlAttributes = new { @class = "form-control" }})
+                                @Html.ValidationMessageFor(model => model.CreatedDate, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-lg-4 col-md-4 col-sm-4 control-label">
+                                @Html.LabelFor(model => model.ExpectedExpirationDate)
+                            </div>
+                            <div class="col-lg-8 col-md-8 col-sm-8 form-control-static">
+                                @Html.EditorFor(model => model.ExpectedExpirationDate, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.ExpectedExpirationDate, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-lg-4 col-md-4 col-sm-4 col-lg-offset-4 col-md-offset-4 col-sm-offset-4">
+                                <div class="btn-toolbar form-control-static">
+                                    <button class="btn btn-primary" type="submit">Submit</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+            }
+        </div>
+    </div>
+</div>

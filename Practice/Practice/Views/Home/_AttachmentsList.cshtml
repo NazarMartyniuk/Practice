@@ -1,0 +1,25 @@
+﻿@model Practice.Models.TaskAttachmentsViewModel
+
+@if (Model.Attachments != null && Model.Attachments.Count() > 0)
+{
+    <div class="table-responsive">
+        <table class="table table-condensed table-striped">
+            <thead></thead>
+            <tbody>
+                @foreach (var att in Model.Attachments)
+                {
+                    <tr>
+                        <td><a class="btn btn-link btn-xs" href='@Url.Action("GetAttachment", new { attachmentId = att.Id })'><span style="white-space:pre-wrap">@att.Name</span></a></td>
+                        <td>
+                            <a class="btn btn-link btn-xs removeattachment" data-href='@Url.Action("RemoveAttachment", new { taskId = Model.TaskId, attachmentId = @att.Id })'>Remove</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+else
+{
+    <span class="text-info">There are no attachments for this task</span>
+}

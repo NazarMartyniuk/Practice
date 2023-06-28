@@ -1,0 +1,53 @@
+﻿@model Practice.Models.TaskAttachmentsViewModel
+
+<div class="bs-component" id="attachmentspanel">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h2>Attachments</h2>
+        </div>
+        <div class="panel-body">
+            <div id="attachmentslist">
+                @{Html.RenderPartial("_AttachmentsList", Model); }
+            </div>
+        </div>
+        <div class="panel-footer">
+            <div class="row" id="addattachmentsbtn">
+                <div class="col-lg-2 col-md-2 col-sm-2 form-group">
+                    <button type="button" id="addattachments" class="btn btn-primary">Add Attachments</button>
+                </div>
+            </div>
+            <div id="addattachmentsloader" style="display:none;">
+                <div class="progress" style="height:10px;margin:0px">
+                    <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width:100%"></div>
+                </div>
+            </div>
+            <div id="addattachmentsinput" style="display:none">
+                <form id="smbtattachmentsfrm" enctype="multipart/form-data" method="post">
+                    @Html.AntiForgeryToken()
+                    <fieldset>
+                        @Html.HiddenFor(model => model.TaskId, new { id = "taskid", name = "taskid" })
+                        <div class="row">
+                            <div class="form-group">
+                                <div class="col-lg-3 col-md-3 col-sm-3">
+                                    <div class="btn-toolbar form-control-static">
+                                        <label for="files" class="btn btn-primary">Select Files</label>
+                                        <input id="files" name="files" style="visibility:hidden;width:1px;height:1px" type="file" multiple="" />
+                                        <button type="button" id="cancelattachments" class="btn btn-default form-control" style="width:100px">Cancel</button>
+                                    </div>
+                                    <div class="form-control-static">
+                                        <input type="submit" class="btn btn-primary" id="submitattachments" value="Submit" disabled="disabled" />
+                                    </div>
+                                </div>
+                                <div class="col-lg-7 col-md-7 col-sm-7 form-control-static">
+                                    <div id="filespreview" class="bs-component">
+                                        <p>No files selected</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

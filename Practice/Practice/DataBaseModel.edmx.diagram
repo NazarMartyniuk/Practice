@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="31c611addce948cdb068afe20f43fefd" Name="Diagram1">
+        <EntityTypeShape EntityType="PracticeModel.Attachement" Width="1.5" PointX="6" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="PracticeModel.AttachmentTask" Width="1.5" PointX="8.25" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="PracticeModel.Priority" Width="1.5" PointX="0.75" PointY="1.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="PracticeModel.Project" Width="1.5" PointX="0.75" PointY="4.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="PracticeModel.Task" Width="1.5" PointX="3" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="PracticeModel.TaskType" Width="1.5" PointX="0.75" PointY="8" IsExpanded="true" />
+        <EntityTypeShape EntityType="PracticeModel.Worker" Width="1.5" PointX="6" PointY="4.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="PracticeModel.WorkerJob" Width="1.5" PointX="3.75" PointY="1" IsExpanded="true" />
+        <AssociationConnector Association="PracticeModel.FK_AttachmentTask_Attachement" ManuallyRouted="false" />
+        <AssociationConnector Association="PracticeModel.FK_AttachmentTask_Task" ManuallyRouted="false" />
+        <AssociationConnector Association="PracticeModel.FK_Task_Priority" ManuallyRouted="false" />
+        <AssociationConnector Association="PracticeModel.FK_Task_Project" ManuallyRouted="false" />
+        <AssociationConnector Association="PracticeModel.FK_Worker_Project" ManuallyRouted="false" />
+        <AssociationConnector Association="PracticeModel.FK_Task_TaskType" ManuallyRouted="false" />
+        <AssociationConnector Association="PracticeModel.FK_Task_Worker" ManuallyRouted="false" />
+        <AssociationConnector Association="PracticeModel.FK_Task_Worker1" ManuallyRouted="false" />
+        <AssociationConnector Association="PracticeModel.FK_Worker_Worker" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

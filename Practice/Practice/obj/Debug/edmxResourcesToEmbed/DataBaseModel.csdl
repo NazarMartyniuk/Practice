@@ -1,0 +1,249 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="PracticeModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Attachement">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="FileName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="FileContent" Type="Binary" MaxLength="Max" FixedLength="false" Nullable="false" />
+    <Property Name="FileType" Type="Int32" />
+    <NavigationProperty Name="AttachmentTasks" Relationship="Self.FK_AttachmentTask_Attachement" FromRole="Attachement" ToRole="AttachmentTask" />
+  </EntityType>
+  <EntityType Name="AttachmentTask">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="TaskId" Type="Int32" Nullable="false" />
+    <Property Name="AttachmentId" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Attachement" Relationship="Self.FK_AttachmentTask_Attachement" FromRole="AttachmentTask" ToRole="Attachement" />
+    <NavigationProperty Name="Task" Relationship="Self.FK_AttachmentTask_Task" FromRole="AttachmentTask" ToRole="Task" />
+  </EntityType>
+  <EntityType Name="Priority">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="Tasks" Relationship="Self.FK_Task_Priority" FromRole="Priority" ToRole="Task" />
+  </EntityType>
+  <EntityType Name="Project">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Description" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="ExpectedExpirationDate" Type="DateTime" Nullable="false" Precision="0" />
+    <NavigationProperty Name="Tasks" Relationship="Self.FK_Task_Project" FromRole="Project" ToRole="Task" />
+    <NavigationProperty Name="Workers" Relationship="Self.FK_Worker_Project" FromRole="Project" ToRole="Worker" />
+  </EntityType>
+  <EntityType Name="Task">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Description" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+    <Property Name="CreationDate" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="ExpirationDate" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="ProjectId" Type="Int32" Nullable="false" />
+    <Property Name="TaskTypeId" Type="Int32" Nullable="false" />
+    <Property Name="WorkerId" Type="Int32" />
+    <Property Name="PriorityId" Type="Int32" Nullable="false" />
+    <Property Name="WatcherId" Type="Int32" />
+    <NavigationProperty Name="AttachmentTasks" Relationship="Self.FK_AttachmentTask_Task" FromRole="Task" ToRole="AttachmentTask" />
+    <NavigationProperty Name="Priority" Relationship="Self.FK_Task_Priority" FromRole="Task" ToRole="Priority" />
+    <NavigationProperty Name="Project" Relationship="Self.FK_Task_Project" FromRole="Task" ToRole="Project" />
+    <NavigationProperty Name="TaskType" Relationship="Self.FK_Task_TaskType" FromRole="Task" ToRole="TaskType" />
+    <NavigationProperty Name="Worker" Relationship="Self.FK_Task_Worker" FromRole="Task" ToRole="Worker" />
+    <NavigationProperty Name="Worker1" Relationship="Self.FK_Task_Worker1" FromRole="Task" ToRole="Worker" />
+  </EntityType>
+  <EntityType Name="TaskType">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="Tasks" Relationship="Self.FK_Task_TaskType" FromRole="TaskType" ToRole="Task" />
+  </EntityType>
+  <EntityType Name="Worker">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Surname" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Age" Type="Int32" Nullable="false" />
+    <Property Name="ProjectId" Type="Int32" />
+    <Property Name="JobId" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Project" Relationship="Self.FK_Worker_Project" FromRole="Worker" ToRole="Project" />
+    <NavigationProperty Name="Tasks" Relationship="Self.FK_Task_Worker" FromRole="Worker" ToRole="Task" />
+    <NavigationProperty Name="Tasks1" Relationship="Self.FK_Task_Worker1" FromRole="Worker" ToRole="Task" />
+    <NavigationProperty Name="WorkerJob" Relationship="Self.FK_Worker_Worker" FromRole="Worker" ToRole="WorkerJob" />
+  </EntityType>
+  <EntityType Name="WorkerJob">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" />
+    <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="Workers" Relationship="Self.FK_Worker_Worker" FromRole="WorkerJob" ToRole="Worker" />
+  </EntityType>
+  <Association Name="FK_AttachmentTask_Attachement">
+    <End Role="Attachement" Type="Self.Attachement" Multiplicity="1" />
+    <End Role="AttachmentTask" Type="Self.AttachmentTask" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Attachement">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="AttachmentTask">
+        <PropertyRef Name="AttachmentId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_AttachmentTask_Task">
+    <End Role="Task" Type="Self.Task" Multiplicity="1" />
+    <End Role="AttachmentTask" Type="Self.AttachmentTask" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Task">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="AttachmentTask">
+        <PropertyRef Name="TaskId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Task_Priority">
+    <End Role="Priority" Type="Self.Priority" Multiplicity="1" />
+    <End Role="Task" Type="Self.Task" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Priority">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Task">
+        <PropertyRef Name="PriorityId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Task_Project">
+    <End Role="Project" Type="Self.Project" Multiplicity="1" />
+    <End Role="Task" Type="Self.Task" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Project">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Task">
+        <PropertyRef Name="ProjectId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Worker_Project">
+    <End Role="Project" Type="Self.Project" Multiplicity="0..1" />
+    <End Role="Worker" Type="Self.Worker" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Project">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Worker">
+        <PropertyRef Name="ProjectId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Task_TaskType">
+    <End Role="TaskType" Type="Self.TaskType" Multiplicity="1" />
+    <End Role="Task" Type="Self.Task" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="TaskType">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Task">
+        <PropertyRef Name="TaskTypeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Task_Worker">
+    <End Role="Worker" Type="Self.Worker" Multiplicity="0..1" />
+    <End Role="Task" Type="Self.Task" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Worker">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Task">
+        <PropertyRef Name="WorkerId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Task_Worker1">
+    <End Role="Worker" Type="Self.Worker" Multiplicity="0..1" />
+    <End Role="Task" Type="Self.Task" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Worker">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Task">
+        <PropertyRef Name="WatcherId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Worker_Worker">
+    <End Role="WorkerJob" Type="Self.WorkerJob" Multiplicity="1" />
+    <End Role="Worker" Type="Self.Worker" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="WorkerJob">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Worker">
+        <PropertyRef Name="JobId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="PracticeEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Attachements" EntityType="Self.Attachement" />
+    <EntitySet Name="AttachmentTasks" EntityType="Self.AttachmentTask" />
+    <EntitySet Name="Priorities" EntityType="Self.Priority" />
+    <EntitySet Name="Projects" EntityType="Self.Project" />
+    <EntitySet Name="Tasks" EntityType="Self.Task" />
+    <EntitySet Name="TaskTypes" EntityType="Self.TaskType" />
+    <EntitySet Name="Workers" EntityType="Self.Worker" />
+    <EntitySet Name="WorkerJobs" EntityType="Self.WorkerJob" />
+    <AssociationSet Name="FK_AttachmentTask_Attachement" Association="Self.FK_AttachmentTask_Attachement">
+      <End Role="Attachement" EntitySet="Attachements" />
+      <End Role="AttachmentTask" EntitySet="AttachmentTasks" />
+    </AssociationSet>
+    <AssociationSet Name="FK_AttachmentTask_Task" Association="Self.FK_AttachmentTask_Task">
+      <End Role="Task" EntitySet="Tasks" />
+      <End Role="AttachmentTask" EntitySet="AttachmentTasks" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Task_Priority" Association="Self.FK_Task_Priority">
+      <End Role="Priority" EntitySet="Priorities" />
+      <End Role="Task" EntitySet="Tasks" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Task_Project" Association="Self.FK_Task_Project">
+      <End Role="Project" EntitySet="Projects" />
+      <End Role="Task" EntitySet="Tasks" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Worker_Project" Association="Self.FK_Worker_Project">
+      <End Role="Project" EntitySet="Projects" />
+      <End Role="Worker" EntitySet="Workers" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Task_TaskType" Association="Self.FK_Task_TaskType">
+      <End Role="TaskType" EntitySet="TaskTypes" />
+      <End Role="Task" EntitySet="Tasks" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Task_Worker" Association="Self.FK_Task_Worker">
+      <End Role="Worker" EntitySet="Workers" />
+      <End Role="Task" EntitySet="Tasks" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Task_Worker1" Association="Self.FK_Task_Worker1">
+      <End Role="Worker" EntitySet="Workers" />
+      <End Role="Task" EntitySet="Tasks" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Worker_Worker" Association="Self.FK_Worker_Worker">
+      <End Role="WorkerJob" EntitySet="WorkerJobs" />
+      <End Role="Worker" EntitySet="Workers" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

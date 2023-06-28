@@ -1,0 +1,37 @@
+﻿@model Practice.Models.WorkersViewModel
+
+<div class="page-header">
+    <h1>Workers List</h1>
+</div>
+
+<div class="bs-component">
+    <div class="col-lg-6">
+        @Html.ActionLink("Hire New Worker", "HireWorker", new { ReturnUrl = "" }, new { @class = "btn btn-link" })
+    </div>
+</div>
+
+<div class="bs-component">
+    <table class="table table-striped table-hover">
+        <thead>
+            <tr class="tablehead">
+                <th>Name</th>
+                <th>Surname</th>
+                <th>Age</th>
+                <th>Role</th>
+                <th>Project Allocation</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var worker in Model.Workers)
+            {
+                <tr class="clickable-row" style="cursor: pointer">
+                    <td>@worker.Name</td>
+                    <td>@worker.Surname</td>
+                    <td>@worker.Age</td>
+                    <td>@worker.Job</td>
+                    <td>@worker.ProjectName</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

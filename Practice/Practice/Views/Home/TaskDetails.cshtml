@@ -1,0 +1,190 @@
+﻿@model Practice.Models.TaskDetailsViewModel
+
+<div class="bs-component">
+    <h1>@Model.Name</h1>
+</div>
+
+<div class="bs-component">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h2>Details</h2>
+        </div>
+        <div class="panel-body">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                        <div class="row">
+                            <div class="col-lg-4 col-md-4 col-sm-4 control-label">
+                                @Html.DisplayNameFor(model => model.Description)
+                            </div>
+                            <div class="col-lg-8 col-md-8 col-sm-8">
+                                @Html.DisplayFor(model => model.Description)
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-4 col-md-4 col-sm-4 control-label">
+                                @Html.DisplayNameFor(model => model.Type)
+                            </div>
+                            <div class="col-lg-8 col-md-8 col-sm-8" style="color:@(Practice.code.Functions.GetTaskTypeColor(Model.Type))">
+                                @Html.DisplayFor(model => model.Type)
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-4 col-md-4 col-sm-4 control-label">
+                                <label>Project Name</label>
+                            </div>
+                            <div class="col-lg-8 col-md-8 col-sm-8">
+                                @Html.DisplayFor(model => model.ProjectName)
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-4 col-md-4 col-sm-4 control-label">
+                                <label>Creation Date</label>
+                            </div>
+                            <div class="col-lg-8 col-md-8 col-sm-8">
+                                @Html.DisplayFor(model => model.CreationDate)
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-4 col-md-4 col-sm-4 control-label">
+                                <label>Expiration Date</label>
+                            </div>
+                            <div class="col-lg-8 col-md-8 col-sm-8">
+                                @Html.DisplayFor(model => model.ExpirationDate)
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-4 col-md-4 col-sm-4 control-label">
+                                @Html.DisplayNameFor(model => model.Priority)
+                            </div>
+                            <div class="col-lg-8 col-md-8 col-sm-8" style="color:@(Practice.code.Functions.GetTaskPriorityColor(Model.Priority))">
+                                @Html.DisplayFor(model => model.Priority)
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                        <div class="row">
+                            <div class="col-lg-4 col-md-4 col-sm-4 control-label">
+                                <label>Assignee:</label>
+                            </div>
+                        </div>
+                        <div class="col-lg-8 col-md-8 col-sm-8">
+                            @Html.DisplayFor(model => model.Worker)
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-4 col-md-4 col-sm-4 control-label">
+                                <label>Watcher:</label>
+                            </div>
+                        </div>
+                        <div class="col-lg-8 col-md-8 col-sm-8">
+                            @Html.DisplayFor(model => model.Watcher)
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@{Html.RenderPartial("_AttachmentsPanel", Model.Attachments);}
+
+@section scripts
+{
+    <script src="@Url.Content("~/Scripts/TaskAttachment.js")" type="text/javascript"></script>
+    <script type="text/javascript">
+        jQuery(document).ready(function ($) {
+            jQuery(document).on('click', '#addattachments', function () {
+                $('#addattachmentsinput').show();
+                var input = document.getElementById('files');
+                var savebtn = document.getElementById('submitattachments');
+                var preview = document.getElementById('filespreview');
+                $(document).ready(handleFiles(input, preview, "#cancelattachments", savebtn));
+                $('#addattachmentsbtn').hide();
+            });
+
+            jQuery(document).on('submit', '#smbtattachmentsfrm', function (event) {
+                event.preventDefault();
+                var fls = document.getElementById('files').files;
+                if (fls.length > 0) {
+                    var formData = new FormData();
+                    for (var i = 0; i < fls.length; i++) {
+                        formData.append("file[]", fls[i], fls[i].name);
+                    }
+                    var id = $("#taskid").val();
+                    var lnk = '@Url.Action("AddAttachments", "Home", new { taskId = "-1" })'
+                    lnk = lnk.replace("-1", id);
+                    $.ajax({
+                        url: lnk,
+                        type: 'POST',
+                        data: formData,
+                        cache: false,
+                        processData: false,
+                        contentType: false,
+                        success: function (data) {
+                            $("#submitattachments").val("Submit");
+                            if (!data) {
+                                return;
+                            } else {
+                                if (!data.Valid) { }
+                                $("#attachmentspanel").replaceWith(data);
+                            }
+                        },
+                        beforeSend: function () {
+                            $('#addattachmentsinput').hide();
+                            $('#addattachmentsloader').show();
+                        },
+                        complete: function () {
+                            $('#addattachmentsloader').hide();
+                        },
+                    });
+                }
+            });
+
+            jQuery(document).on('click', '#cancelattachments', function () {
+                $('#addattachmentsbtn').show();
+                $('#addattachmentsinput').hide();
+            });
+
+            jQuery(document).on('click', '.removeattachment', function () {
+                var thisElement = $(this);
+                $.ajax({
+                    url: $(this).data("href"),
+                    cache: false,
+                    type: "POST",
+                    dataType: "html",
+                    beforeSend: function (xhr) {
+                        var el = document.createElement('tr');
+                        var tdata = document.createElement('td');
+                        tdata.setAttribute('colspan', '4');
+                        var firstdiv = document.createElement('div');
+                        firstdiv.style.height = '10px';
+                        firstdiv.style.margin = '0px';
+                        firstdiv.classList.add('progress');
+                        var seconddiv = document.createElement('div');
+                        seconddiv.classList.add('progress-bar');
+                        seconddiv.classList.add('progress-bar-striped');
+                        seconddiv.classList.add('progress-bar-animated');
+                        seconddiv.setAttribute('role', 'progressbar');
+                        seconddiv.setAttribute('aria-valuenow', '100');
+                        seconddiv.setAttribute('aria-valuemin', '0');
+                        seconddiv.setAttribute('aria-valuemax', '100');
+                        seconddiv.style.width = '100%';
+                        tdata.appendChild(firstdiv);
+                        firstdiv.appendChild(seconddiv);
+                        el.appendChild(tdata);
+                        thisElement.closest('tr').replaceWith(el);
+                    },
+                    success: function (data, textStatus, XMLHttpRequest) {
+                        if (!data) { return; }
+                        else {
+                            if (!data.Valid) { }
+
+                            $("#attachmentslist").html(data);
+                        }
+                    }
+                })
+            });
+        });
+    </script>
+}

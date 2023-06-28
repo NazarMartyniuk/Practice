@@ -1,0 +1,53 @@
+﻿@using Practice.Models
+
+@model AddWorkerToProjectViewModel
+
+<div class="page-header">
+    <h1>Add New Worker to @Model.ProjectName</h1>
+</div>
+
+<div class="bs-component">
+    <div class="well col-lg-12 col-md-12 col-sm-12">
+        @if(!ViewData.ModelState.IsValid)
+        {
+            <div class="alert alert-danger">
+                <span class="close" data-dismiss="alert">×</span>
+                <ul>
+                    @foreach (var key in @ViewData.ModelState.Keys)
+                    {
+                        foreach (var err in ViewData.ModelState[key].Errors)
+                        {
+                            <li>@err.ErrorMessage</li>
+                        }
+                    }
+                </ul>
+            </div>
+        }
+        <div class="col-lg-6 col-md-6 col-sm-6">
+            @using (Html.BeginForm("AddWorkerToProject", "Home", null, FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                @Html.AntiForgeryToken()
+                @Html.HiddenFor(x => x.ProjectId)
+                <fieldset>
+                    <div class="row">
+                        <div class="form-group">
+                            <div class="col-lg-4 col-md-4 col-sm-4 control-label">
+                                <label>Worker</label>
+                            </div>
+                            <div class="col-lg-8 col-md-8 col-sm-8 form-control-static">
+                                @Html.DropDownListFor(model => model.WorkerId, Model.Workers, "---", new { required = "Yes" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-lg-4 col-md-4 col-sm-4 col-lg-offset-4 col-md-offset-4 col-sm-offset-4">
+                                <div class="btn-toolbar form-control-static">
+                                    <button class="btn btn-primary" type="submit">Submit</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+            }
+        </div>
+    </div>
+</div>

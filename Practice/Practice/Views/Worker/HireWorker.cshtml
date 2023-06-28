@@ -1,0 +1,81 @@
+﻿@model Practice.Models.CreateWorkerViewModel
+
+@{ 
+    ViewBag.Title = "Hire Worker";
+}
+
+<div class="page-header">
+    <h1>Hire Worker</h1>
+</div>
+
+<div class="bs-component">
+    <div class="well col-lg-12 col-md-12 col-sm-12">
+        @if (!ViewData.ModelState.IsValid)
+        {
+            <div class="alert alert-danger">
+                <span class="close" data-dismiss="alert">x</span>
+                <ul>
+                    @foreach (var key in ViewData.ModelState.Keys)
+                    {
+                        foreach (var err in ViewData.ModelState[key].Errors)
+                        {
+                            <li>@err.ErrorMessage</li>
+                        }
+                    }
+                </ul>
+            </div>
+        }
+        <div class="col-lg-6 col-md-6 col-sm-6">
+            @using (Html.BeginForm("HireWorker", "Worker", null, FormMethod.Post, new { enctype = "multipart/form-data", novalidate = "novalidate" }))
+            {
+                @Html.AntiForgeryToken()
+                <fieldset>
+                    <div class="row">
+                        <div class="form-group">
+                            <div class="col-lg-4 col-md-4 col-sm-4 control-label">
+                                @Html.LabelFor(model => model.Name)
+                            </div>
+                            <div class="col-lg-8 col-md-8 col-sm-8 form-control-static">
+                                @Html.TextAreaFor(model => model.Name, new { @class = "form-control", rows = 1, style = "resize: none" })
+                                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-lg-4 col-md-4 col-sm-4 control-label">
+                                @Html.LabelFor(model => model.Surname)
+                            </div>
+                            <div class="col-lg-8 col-md-8 col-sm-8 form-control-static">
+                                @Html.TextAreaFor(model => model.Surname, new { @class = "form-control", rows = 1, style = "resize: none" })
+                                @Html.ValidationMessageFor(model => model.Surname, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-lg-4 col-md-4 col-sm-4 control-label">
+                                @Html.LabelFor(model => model.Age)
+                            </div>
+                            <div class="col-lg-8 col-md-8 col-sm-8 form-control-static">
+                                @Html.TextAreaFor(model => model.Age, new { @class = "form-control", rows = 1, style = "resize: none" })
+                                @Html.ValidationMessageFor(model => model.Age, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-lg-4 col-md-4 col-sm-4 control-label">
+                                @Html.LabelFor(model => model.Job)
+                            </div>
+                            <div class="col-lg-8 col-md-8 col-sm-8 form-control-static">
+                                @Html.EnumDropDownListFor(model => model.Job, new { @class = "form-control" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-lg-4 col-md-4 col-sm-4 col-lg-offset-4 col-md-offset-4 col-sm-offset-4">
+                                <div class="btn-toolbar form-control-static">
+                                    <button class="btn btn-primary" type="submit">Submit</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+            }
+        </div>
+    </div>
+</div>
